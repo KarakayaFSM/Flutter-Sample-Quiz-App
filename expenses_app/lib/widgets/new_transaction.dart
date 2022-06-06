@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class NewTransaction extends StatelessWidget {
-  NewTransaction({Key? key}) : super(key: key);
+  NewTransaction({Key? key, required this.onSubmit}) : super(key: key);
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
+  final void Function(String title, double amount) onSubmit;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,10 @@ class NewTransaction extends StatelessWidget {
             TextField(
               decoration: InputDecoration(labelText: "Amount"),
               controller: _amountController,
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: [
+                DecimalNumberFilter(),
+              ],
             ),
             Container(
               margin: EdgeInsets.only(left: 10, top: 10),
@@ -29,7 +35,16 @@ class NewTransaction extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   onPrimary: Colors.black, // Text Color (Foreground color)
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  final givenTitle = _titleController.value.text;
+                  final givenAmount =
+                      double.tryParse(_amountController.value.text) ?? -1;
+
+                  if (!isValid(givenTitle, givenAmount)) {
+                    return;
+                  }
+                  onSubmit(givenTitle, givenAmount);
+                },
                 child: Text(
                   "Add Transaction",
                 ),
@@ -39,5 +54,16 @@ class NewTransaction extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  bool isValid(String givenTitle, double givenAmount) {
+    if (givenTitle.isEmpty || givenAmount <= 0) {
+      return false;
+    }
+    return true;
+  }
+
+  FilteringTextInputFormatter DecimalNumberFilter() {
+    return FilteringTextInputFormatter.allow(RegExp(r'[0-9]+[.]{0,1}[0-9]*'));
   }
 }
