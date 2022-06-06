@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_complete_guide/models/transaction.dart';
-import 'package:flutter_complete_guide/widgets/new_transaction.dart';
-import 'package:flutter_complete_guide/widgets/transaction_list.dart';
+import 'package:flutter_complete_guide/widgets/user_transactions.dart';
 
 void main() => runApp(const MyApp());
 
@@ -20,13 +18,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
 
-  final List<Transaction> _transactions = [
-    Transaction(id: "Muz", title: "Muz", amount: 15.25, date: DateTime.now()),
-    Transaction(id: "Elma", title: "Elma", amount: 12.62, date: DateTime.now()),
-    Transaction(
-        id: "Armut", title: "Armut", amount: 13.85, date: DateTime.now()),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,8 +35,7 @@ class MyHomePage extends StatelessWidget {
               elevation: 5,
             ),
           ),
-          NewTransaction(),
-          TransactionList(_transactions)
+          UserTransactions()
         ],
       ),
     );
