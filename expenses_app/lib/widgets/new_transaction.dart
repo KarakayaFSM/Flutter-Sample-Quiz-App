@@ -2,12 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class NewTransaction extends StatelessWidget {
+class NewTransaction extends StatefulWidget {
   NewTransaction({Key? key, required this.onSubmit}) : super(key: key);
 
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _amountController = TextEditingController();
   final void Function(String title, double amount) onSubmit;
+
+  @override
+  State<NewTransaction> createState() => _NewTransactionState();
+}
+
+class _NewTransactionState extends State<NewTransaction> {
+  final TextEditingController _titleController = TextEditingController();
+
+  final TextEditingController _amountController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +57,8 @@ class NewTransaction extends StatelessWidget {
                         gravity: ToastGravity.TOP);
                     return;
                   }
-                  onSubmit(givenTitle, givenAmount);
+                  widget.onSubmit(givenTitle, givenAmount);
+                  Navigator.of(context).pop();
                 },
                 child: Text(
                   "Add Transaction",
