@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class NewTransaction extends StatelessWidget {
   NewTransaction({Key? key, required this.onSubmit}) : super(key: key);
@@ -40,7 +41,13 @@ class NewTransaction extends StatelessWidget {
                   final givenAmount =
                       double.tryParse(_amountController.value.text) ?? -1;
 
+                  print("given title: $givenTitle");
+                  print("given amount: $givenAmount");
+
                   if (!isValid(givenTitle, givenAmount)) {
+                    Fluttertoast.showToast(
+                        msg: "Please enter a valid title and amount",
+                        gravity: ToastGravity.TOP);
                     return;
                   }
                   onSubmit(givenTitle, givenAmount);
